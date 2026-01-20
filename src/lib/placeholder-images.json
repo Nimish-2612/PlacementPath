@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "logo",
+      "description": "PlacementPath logo",
+      "imageUrl": "https://images.unsplash.com/photo-1765132875625-e3ea8421d0aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwYXRoJTIwY29tcGFzc3xlbnwwfHx8fDE3Njg5MjE5NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "path compass"
+    }
+  ]
 }
