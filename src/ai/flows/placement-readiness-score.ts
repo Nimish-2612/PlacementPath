@@ -79,6 +79,13 @@ const placementReadinessScoreFlow = ai.defineFlow(
     name: 'placementReadinessScoreFlow',
     inputSchema: PlacementReadinessScoreInputSchema,
     outputSchema: PlacementReadinessScoreOutputSchema,
+    retry: {
+      maxAttempts: 3,
+      backoff: {
+        delay: '1s',
+        multiplier: 2,
+      },
+    },
   },
   async input => {
     const {output} = await prompt(input);
