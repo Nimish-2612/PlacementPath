@@ -1,9 +1,7 @@
 'use client';
 
 import { usePlacementData } from '@/context/placement-data-context';
-import { runPlacementReadinessScore } from '@/app/dashboard/actions';
-import type { PlacementReadinessScoreOutput } from '@/ai/flows/placement-readiness-score';
-import { useEffect, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import PreparationGpsMap from '@/components/gps/preparation-gps-map';
 import WeakestAreaCard from '@/components/dashboard/weakest-area';
@@ -14,34 +12,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Loader2 } from 'lucide-react';
 
 export default function PreparationGpsPage() {
-  const { dsaCompletion, coreCsCompletion, projectConfidence, weeklyConsistency, state } = usePlacementData();
-  const { resumeReady } = state.userProfile;
-  const [readinessResult, setReadinessResult] = useState<PlacementReadinessScoreOutput | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { readinessScoreResult, isReadinessScoreLoading: isLoading } = usePlacementData();
 
-  useEffect(() => {
-    async function calculateScore() {
-      setIsLoading(true);
-      try {
-        const scoreResult = await runPlacementReadinessScore({
-          dsaCompletion,
-          coreCsCompletion,
-          projectConfidence,
-          weeklyConsistency,
-          resumeReady,
-        });
-        setReadinessResult(scoreResult);
-      } catch (error) {
-        console.error("Failed to calculate readiness score:", error);
-        setReadinessResult({ score: 0, message: "Error calculating score." });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    calculateScore();
-  }, [dsaCompletion, coreCsCompletion, projectConfidence, weeklyConsistency, resumeReady]);
-
-  const readinessScore = readinessResult?.score ?? 0;
+  const readinessScore = readinessScoreResult?.score ?? 0;
 
   const { nextMilestone } = useMemo(() => {
     const sortedMilestones = [...MILESTONES].sort((a, b) => a.readinessThreshold - b.readinessThreshold);

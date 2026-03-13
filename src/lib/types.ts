@@ -1,3 +1,5 @@
+import type { PlacementReadinessScoreOutput } from '@/ai/flows/placement-readiness-score';
+
 export type DsaStatus = 'Not Started' | 'In Progress' | 'Confident';
 
 export type DsaTopic = {
@@ -118,4 +120,6 @@ export type PlacementDataContextType = {
     status: MentalReadinessStatus;
     recommendation: string;
   } | null;
+  readinessScoreResult: PlacementReadinessScoreOutput | null;
+  isReadinessScoreLoading: boolean;
 };

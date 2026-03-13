@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useReducer, useContext, useMemo } from 'react';
+import React, { createContext, useReducer, useContext, useMemo, useState, useEffect } from 'react';
 import type { 
   PlacementDataState, 
   PlacementDataAction, 
@@ -19,6 +19,8 @@ import type {
 } from '@/lib/types';
 import { INITIAL_DSA_TOPICS, INITIAL_CORE_CS_TOPICS } from '@/lib/data';
 import { format, subDays } from 'date-fns';
+import { runPlacementReadinessScore } from '@/app/dashboard/actions';
+import type { PlacementReadinessScoreOutput } from '@/ai/flows/placement-readiness-score';
 
 const initialState: PlacementDataState = {
   dsaTopics: INITIAL_DSA_TOPICS,
@@ -132,6 +134,9 @@ function placementDataReducer(state: PlacementDataState, action: PlacementDataAc
 
 export function PlacementDataProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(placementDataReducer, initialState);
+  
+  const [readinessScoreResult, setReadinessScoreResult] = useState<PlacementReadinessScoreOutput | null>(null);
+  const [isReadinessScoreLoading, setIsReadinessScoreLoading] = useState(true);
 
   const dsaCompletion = useMemo(() => {
     const confidentTopics = state.dsaTopics.filter(t => t.status === 'Confident').length;
@@ -155,6 +160,40 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
     if (avgConfidence >= 1.5) return 'Medium';
     return 'Low';
   }, [state.projects]);
+
+  const weeklyConsistency = useMemo(() => {
+    const recentActivity = state.weeklyActivity.filter(a => {
+      const activityDate = new Date(a.date);
+      const sevenDaysAgo = subDays(new Date(), 7);
+      return activityDate >= sevenDaysAgo;
+    });
+    const activeDays = new Set(recentActivity.map(a => a.date)).size;
+    return Math.round((activeDays / 7) * 100);
+  }, [state.weeklyActivity]);
+
+  const { resumeReady } = state.userProfile;
+
+  useEffect(() => {
+    async function calculateScore() {
+      setIsReadinessScoreLoading(true);
+      try {
+        const scoreResult = await runPlacementReadinessScore({
+          dsaCompletion,
+          coreCsCompletion,
+          projectConfidence,
+          weeklyConsistency,
+          resumeReady,
+        });
+        setReadinessScoreResult(scoreResult);
+      } catch (error) {
+        console.error("Failed to calculate readiness score:", error);
+        setReadinessScoreResult({ score: 0, message: "Error calculating score. AI model may be busy." });
+      } finally {
+        setIsReadinessScoreLoading(false);
+      }
+    }
+    calculateScore();
+  }, [dsaCompletion, coreCsCompletion, projectConfidence, weeklyConsistency, resumeReady]);
 
   const weakestDsaCategory = useMemo(() => {
     const categoryConfidence: { [key: string]: { confident: number, total: number } } = {};
@@ -181,16 +220,6 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
     }
     return weakestCategory;
   }, [state.dsaTopics]);
-
-  const weeklyConsistency = useMemo(() => {
-    const recentActivity = state.weeklyActivity.filter(a => {
-      const activityDate = new Date(a.date);
-      const sevenDaysAgo = subDays(new Date(), 7);
-      return activityDate >= sevenDaysAgo;
-    });
-    const activeDays = new Set(recentActivity.map(a => a.date)).size;
-    return Math.round((activeDays / 7) * 100);
-  }, [state.weeklyActivity]);
 
   const mentalReadiness = useMemo(() => {
     if (state.mentalCheckinHistory.length === 0) return null;
@@ -254,7 +283,7 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
     return { count, averageRating: parseFloat(averageRating.toFixed(1)) };
   }, [state.feedback]);
 
-  const value = { 
+  const value: PlacementDataContextType = { 
     state, 
     dispatch, 
     dsaCompletion, 
@@ -266,6 +295,8 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
     weeklyConsistency,
     feedbackSummary,
     mentalReadiness,
+    readinessScoreResult,
+    isReadinessScoreLoading,
   };
 
   return <PlacementDataContext.Provider value={value}>{children}</PlacementDataContext.Provider>;
