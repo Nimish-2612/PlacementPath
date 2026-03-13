@@ -100,6 +100,7 @@ const placementReadinessScoreFlow = ai.defineFlow(
         delay: '1s',
         multiplier: 2,
       },
+      errors: (e: Error) => /429|503/.test(e.message),
     },
   },
   async input => {

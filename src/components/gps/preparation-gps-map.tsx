@@ -91,8 +91,10 @@ export default function PreparationGpsMap({ readinessScore, milestones }: Prepar
                     })}
                     
                     <motion.g
-                        style={{ offsetPath: `path('${path}')` }}
-                        initial={{ offsetDistance: '0%' }}
+                        style={{
+                            offsetPath: `path('${path}')`,
+                            offsetDistance: '0%'
+                        } as React.CSSProperties}
                         animate={{ offsetDistance: `${readinessScore}%` }}
                         transition={{ duration: 1.5, ease: "easeInOut" }}
                     >
