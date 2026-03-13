@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 import { format, subDays, eachDayOfInterval } from 'date-fns';
 import { Calendar, Check, Clock } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import ConsistencyScoreCard from '@/components/dashboard/consistency-score';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 const ActivityHeatmap = ({ data }: { data: { date: string; dsaProblems: number }[] }) => {
@@ -102,7 +103,7 @@ export default function ProgressPage() {
                         <BarChart data={weeklyChartData}>
                             <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false}/>
                             <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false}/>
-                            <Tooltip contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
+                            <RechartsTooltip contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
                             <Legend />
                             <Bar dataKey="Problems" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                             <Bar dataKey="Hours" fill="hsl(var(--secondary))" radius={[4, 4, 0, 0]} />
