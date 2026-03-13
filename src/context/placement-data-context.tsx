@@ -136,7 +136,7 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
   const [state, dispatch] = useReducer(placementDataReducer, initialState);
   
   const [readinessScoreResult, setReadinessScoreResult] = useState<PlacementReadinessScoreOutput | null>(null);
-  const [isReadinessScoreLoading, setIsReadinessScoreLoading] = useState(true);
+  const [isReadinessScoreLoading, setIsReadinessScoreLoading] = useState(false);
 
   const dsaCompletion = useMemo(() => {
     const confidentTopics = state.dsaTopics.filter(t => t.status === 'Confident').length;
@@ -173,27 +173,24 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
 
   const { resumeReady } = state.userProfile;
 
-  useEffect(() => {
-    async function calculateScore() {
-      setIsReadinessScoreLoading(true);
-      try {
-        const scoreResult = await runPlacementReadinessScore({
-          dsaCompletion,
-          coreCsCompletion,
-          projectConfidence,
-          weeklyConsistency,
-          resumeReady,
-        });
-        setReadinessScoreResult(scoreResult);
-      } catch (error) {
-        console.error("Failed to calculate readiness score:", error);
-        setReadinessScoreResult({ score: 0, message: "Error calculating score. AI model may be busy." });
-      } finally {
-        setIsReadinessScoreLoading(false);
-      }
+  const calculateReadinessScore = async () => {
+    setIsReadinessScoreLoading(true);
+    try {
+      const scoreResult = await runPlacementReadinessScore({
+        dsaCompletion,
+        coreCsCompletion,
+        projectConfidence,
+        weeklyConsistency,
+        resumeReady,
+      });
+      setReadinessScoreResult(scoreResult);
+    } catch (error) {
+      console.error("Failed to calculate readiness score:", error);
+      setReadinessScoreResult({ score: 0, message: "Error calculating score. AI model may be busy." });
+    } finally {
+      setIsReadinessScoreLoading(false);
     }
-    calculateScore();
-  }, [dsaCompletion, coreCsCompletion, projectConfidence, weeklyConsistency, resumeReady]);
+  };
 
   const weakestDsaCategory = useMemo(() => {
     const categoryConfidence: { [key: string]: { confident: number, total: number } } = {};
@@ -297,6 +294,7 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
     mentalReadiness,
     readinessScoreResult,
     isReadinessScoreLoading,
+    calculateReadinessScore,
   };
 
   return <PlacementDataContext.Provider value={value}>{children}</PlacementDataContext.Provider>;

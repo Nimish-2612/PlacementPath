@@ -122,4 +122,5 @@ export type PlacementDataContextType = {
   } | null;
   readinessScoreResult: PlacementReadinessScoreOutput | null;
   isReadinessScoreLoading: boolean;
+  calculateReadinessScore: () => Promise<void>;
 };
