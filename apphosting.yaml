@@ -2,6 +2,13 @@
 # https://firebase.google.com/docs/app-hosting/configure
 
 runConfig:
-  # Increase this value if you'd like to automatically spin up
-  # more instances in response to increased traffic.
+  # By setting minInstances to 0, your app can scale to zero when there's no traffic,
+  # which is cost-effective and suitable for the Spark plan's free tier.
+  minInstances: 0
+  # Limiting maxInstances to 1 helps stay within the free usage limits of the Spark plan.
+  # Increase this value if you anticipate higher traffic and are on a paid plan.
   maxInstances: 1
+  # Explicitly setting CPU and memory can help manage resource consumption.
+  # These are the default values and are suitable for keeping usage within the free tier.
+  cpu: 1
+  memoryMiB: 512
