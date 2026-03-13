@@ -43,7 +43,7 @@ export function UserNav() {
           <DropdownMenuItem>Settings</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push('/')}>
+        <DropdownMenuItem onClick={() => router.push('/login')}>
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>

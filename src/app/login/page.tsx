@@ -11,24 +11,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
-export default function SignupPage() {
+export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     // Simulate API call
     setTimeout(() => {
       // In a real app, you'd handle Firebase Auth here.
+      // For this demo, we'll just show a success toast and redirect.
       toast({
-        title: 'Account Created!',
-        description: 'Welcome to PlacementPath. You can now log in.',
+        title: 'Login Successful',
+        description: "Welcome back! Let's get you placement-ready.",
       });
-      router.push('/login');
-      setIsLoading(false);
+      router.push('/dashboard');
     }, 1500);
   };
 
@@ -41,15 +41,11 @@ export default function SignupPage() {
                 <Compass className="h-8 w-8 text-primary" />
                 <h1 className="text-3xl font-bold font-headline">PlacementPath</h1>
             </div>
-            <CardTitle className="text-2xl font-headline">Create an Account</CardTitle>
-            <CardDescription>Start your journey to a dream job today.</CardDescription>
+            <CardTitle className="text-2xl font-headline">Welcome Back!</CardTitle>
+            <CardDescription>Sign in to continue your placement journey.</CardDescription>
           </CardHeader>
-          <form onSubmit={handleSignup}>
+          <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input id="name" type="text" placeholder="Your Name" required disabled={isLoading} />
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" placeholder="student@university.edu" required disabled={isLoading} />
@@ -61,12 +57,12 @@ export default function SignupPage() {
             </CardContent>
             <CardFooter className="flex flex-col gap-4">
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? <Loader2 className="animate-spin" /> : 'Sign Up'}
+                {isLoading ? <Loader2 className="animate-spin" /> : 'Log In'}
               </Button>
               <p className="text-sm text-center text-muted-foreground">
-                Already have an account?{' '}
-                <Link href="/login" className="font-semibold text-primary hover:underline">
-                  Log In
+                Don't have an account?{' '}
+                <Link href="/signup" className="font-semibold text-primary hover:underline">
+                  Sign up
                 </Link>
               </p>
             </CardFooter>
