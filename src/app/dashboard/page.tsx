@@ -8,6 +8,7 @@ import WeakestAreaCard from "@/components/dashboard/weakest-area";
 import ConsistencyScoreCard from "@/components/dashboard/consistency-score";
 import SuggestionsCard from "@/components/dashboard/suggestions-card";
 import FeedbackSummaryCard from "@/components/dashboard/feedback-summary";
+import MentalReadinessCard from "@/components/dashboard/mental-readiness-card";
 
 export default function DashboardPage() {
   return (
@@ -19,7 +20,8 @@ export default function DashboardPage() {
         <ProjectsSummaryCard />
         <ReadinessScoreCard />
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <MentalReadinessCard />
         <WeakestAreaCard />
         <ConsistencyScoreCard />
         <SuggestionsCard />

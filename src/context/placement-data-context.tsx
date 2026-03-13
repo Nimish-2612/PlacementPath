@@ -11,10 +11,14 @@ import type {
   ProjectConfidence,
   UserProfile,
   WeeklyActivityItem,
-  Feedback
+  Feedback,
+  MentalCheckin,
+  StressLevel,
+  ConfidenceLevel,
+  MentalReadinessStatus
 } from '@/lib/types';
 import { INITIAL_DSA_TOPICS, INITIAL_CORE_CS_TOPICS } from '@/lib/data';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 const initialState: PlacementDataState = {
   dsaTopics: INITIAL_DSA_TOPICS,
@@ -38,6 +42,10 @@ const initialState: PlacementDataState = {
     { date: '2024-07-26', dsaProblems: 5, studyHours: 2, topicsCompleted: 0 },
   ],
   feedback: [],
+  mentalCheckinHistory: [
+    { timestamp: Date.now() - 8 * 24 * 60 * 60 * 1000, stressLevel: 'Medium', confidenceLevel: 'Confident', studyHours: 25, overwhelmed: false }
+  ],
+  lastCheckinTimestamp: Date.now() - 8 * 24 * 60 * 60 * 1000,
 };
 
 const PlacementDataContext = createContext<PlacementDataContextType | undefined>(undefined);
@@ -106,7 +114,17 @@ function placementDataReducer(state: PlacementDataState, action: PlacementDataAc
       return {
         ...state,
         feedback: [...state.feedback, newFeedback]
-      }
+      };
+    case 'ADD_MENTAL_CHECKIN':
+      const newCheckin: MentalCheckin = {
+        ...action.payload,
+        timestamp: Date.now(),
+      };
+      return {
+        ...state,
+        mentalCheckinHistory: [...state.mentalCheckinHistory, newCheckin],
+        lastCheckinTimestamp: newCheckin.timestamp,
+      };
     default:
       return state;
   }
@@ -167,16 +185,51 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
   const weeklyConsistency = useMemo(() => {
     const recentActivity = state.weeklyActivity.filter(a => {
       const activityDate = new Date(a.date);
-      const sevenDaysAgo = new Date();
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const sevenDaysAgo = subDays(new Date(), 7);
       return activityDate >= sevenDaysAgo;
     });
     const activeDays = new Set(recentActivity.map(a => a.date)).size;
     return Math.round((activeDays / 7) * 100);
   }, [state.weeklyActivity]);
 
+  const mentalReadiness = useMemo(() => {
+    if (state.mentalCheckinHistory.length === 0) return null;
+
+    const lastCheckin = state.mentalCheckinHistory[state.mentalCheckinHistory.length - 1];
+    
+    const stressScoreMap: Record<StressLevel, number> = { 'Very High': 100, 'High': 75, 'Medium': 50, 'Low': 25, 'Very Low': 0 };
+    const confidenceScoreMap: Record<ConfidenceLevel, number> = { 'Very Anxious': 100, 'Not Confident': 75, 'Neutral': 50, 'Confident': 25, 'Very Confident': 0 };
+
+    const stressScore = stressScoreMap[lastCheckin.stressLevel] * 0.4;
+    const confidenceScore = confidenceScoreMap[lastCheckin.confidenceLevel] * 0.3;
+    const hoursScore = (lastCheckin.studyHours > 35 ? 100 : 0) * 0.2;
+    const overwhelmedScore = (lastCheckin.overwhelmed ? 100 : 0) * 0.1;
+    
+    const burnoutScore = Math.round(stressScore + confidenceScore + hoursScore + overwhelmedScore);
+    const mentalReadinessScore = 100 - burnoutScore;
+
+    let status: MentalReadinessStatus;
+    let recommendation: string;
+
+    if (burnoutScore > 60) {
+        status = 'High Burnout Risk';
+        recommendation = "You've been working hard. Taking a short break can improve focus. Try relaxing today.";
+    } else if (burnoutScore > 30) {
+        status = 'Moderate Stress';
+        recommendation = "You're making progress but may need better balance. Focus on smaller, achievable goals.";
+    } else {
+        status = 'Low Stress';
+        recommendation = "You're doing great! Keep up the balanced preparation rhythm.";
+    }
+    
+    return { score: mentalReadinessScore, status, recommendation };
+  }, [state.mentalCheckinHistory]);
+
   const suggestions = useMemo(() => {
     const s = [];
+    if (mentalReadiness?.status === 'High Burnout Risk') {
+      s.push("Your mental readiness is low. It's important to take a break to avoid burnout.");
+    }
     if (weakestDsaCategory) {
       s.push(`Your weakest area is ${weakestDsaCategory}. Focus on practicing those topics.`);
     }
@@ -187,10 +240,11 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
       s.push('Try to study more consistently each week to build momentum.');
     }
     if (!state.userProfile.resumeReady) {
-      s.push('Prepare and upload your resume to improve your readiness score.');
+      s.push('A placement-ready resume is crucial. Consider finalizing yours soon.');
     }
     return s.slice(0, 3); // Max 3 suggestions
-  }, [weakestDsaCategory, state.projects.length, weeklyConsistency, state.userProfile.resumeReady]);
+  }, [weakestDsaCategory, state.projects.length, weeklyConsistency, state.userProfile.resumeReady, mentalReadiness]);
+
 
   const feedbackSummary = useMemo(() => {
     const count = state.feedback.length;
@@ -210,7 +264,8 @@ export function PlacementDataProvider({ children }: { children: React.ReactNode 
     weakestDsaCategory,
     suggestions,
     weeklyConsistency,
-    feedbackSummary
+    feedbackSummary,
+    mentalReadiness,
   };
 
   return <PlacementDataContext.Provider value={value}>{children}</PlacementDataContext.Provider>;

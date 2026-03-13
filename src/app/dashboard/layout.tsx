@@ -2,6 +2,7 @@ import { MainNav } from '@/components/main-nav';
 import { UserNav } from '@/components/user-nav';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Compass } from 'lucide-react';
+import { CheckinHandler } from '@/components/dashboard/checkin-handler';
 
 export default function DashboardLayout({
   children,
@@ -28,7 +29,9 @@ export default function DashboardLayout({
           </div>
         </header>
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          {children}
+          <CheckinHandler>
+            {children}
+          </CheckinHandler>
         </main>
       </div>
     </div>

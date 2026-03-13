@@ -64,6 +64,19 @@ export type Milestone = {
     estimatedTime: string;
 };
 
+// Types for Stress & Burnout Detection
+export type StressLevel = 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High';
+export type ConfidenceLevel = 'Very Confident' | 'Confident' | 'Neutral' | 'Not Confident' | 'Very Anxious';
+export type MentalReadinessStatus = 'Low Stress' | 'Moderate Stress' | 'High Burnout Risk';
+
+export type MentalCheckin = {
+  timestamp: number;
+  stressLevel: StressLevel;
+  confidenceLevel: ConfidenceLevel;
+  studyHours: number;
+  overwhelmed: boolean;
+};
+
 export type PlacementDataState = {
   dsaTopics: DsaTopic[];
   coreCsTopics: CoreCsTopic[];
@@ -71,6 +84,8 @@ export type PlacementDataState = {
   userProfile: UserProfile;
   weeklyActivity: WeeklyActivityItem[];
   feedback: Feedback[];
+  mentalCheckinHistory: MentalCheckin[];
+  lastCheckinTimestamp: number | null;
 };
 
 export type PlacementDataAction =
@@ -81,7 +96,8 @@ export type PlacementDataAction =
   | { type: 'DELETE_PROJECT'; payload: { id: string } }
   | { type: 'UPDATE_PROFILE'; payload: Partial<UserProfile> }
   | { type: 'LOG_ACTIVITY'; payload: Omit<WeeklyActivityItem, 'date'> }
-  | { type: 'ADD_FEEDBACK'; payload: Omit<Feedback, 'id' | 'timestamp'> };
+  | { type: 'ADD_FEEDBACK'; payload: Omit<Feedback, 'id' | 'timestamp'> }
+  | { type: 'ADD_MENTAL_CHECKIN'; payload: Omit<MentalCheckin, 'timestamp'> };
 
 export type PlacementDataContextType = {
   state: PlacementDataState;
@@ -90,7 +106,6 @@ export type PlacementDataContextType = {
   coreCsCompletion: number;
   projectsCompleted: number;
   projectConfidence: ProjectConfidence;
-  // New calculated values
   weakestDsaCategory: string | null;
   suggestions: string[];
   weeklyConsistency: number;
@@ -98,4 +113,9 @@ export type PlacementDataContextType = {
     count: number;
     averageRating: number;
   };
+  mentalReadiness: {
+    score: number;
+    status: MentalReadinessStatus;
+    recommendation: string;
+  } | null;
 };
