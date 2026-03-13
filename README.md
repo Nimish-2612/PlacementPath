@@ -1,4 +1,4 @@
-# PlacementPath - Your Guided Path to Placement Success
+.# PlacementPath - Your Guided Path to Placement Success
 
 This is a Next.js starter project for PlacementPath, a smart roadmap and progress tracker designed to help students prepare for job placements with confidence.
 
