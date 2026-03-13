@@ -98,9 +98,9 @@ export const HeroSection = () => {
       delay: 0.2
     })
     .from(headline, {
-      duration: 2,
+      duration: 1.5,
       scrambleText: {
-        chars: "lowerCase",
+        chars: "upperCase",
         speed: 0.3,
       },
       ease: "none",
@@ -109,12 +109,12 @@ export const HeroSection = () => {
       opacity: 1,
       y: 0,
       duration: 0.8,
-    }, "-=1.5")
+    }, "-=1.1")
     .to(buttonsRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
-    }, "-=1.2");
+    }, "-=0.9");
     
   }, []);
 
