@@ -22,11 +22,6 @@ const ActivityHeatmap = ({ data }: { data: { date: string; dsaProblems: number }
 
     const dataMap = new Map(data.map(item => [item.date, item.dsaProblems]));
 
-    const getWeekDay = (date: Date) => {
-        const day = date.getDay();
-        return day === 0 ? 6 : day -1; // Monday starts at 0
-    }
-    
     const getColor = (count: number) => {
         if (count === 0) return 'bg-muted/50';
         if (count <= 2) return 'bg-primary/20';
@@ -35,8 +30,8 @@ const ActivityHeatmap = ({ data }: { data: { date: string; dsaProblems: number }
     };
 
     return (
-        <div>
-            <div className="grid grid-cols-5 grid-rows-7 sm:grid-cols-7 sm:grid-rows-7 gap-1" style={{gridAutoFlow: 'column'}}>
+        <div className="overflow-x-auto pb-2">
+            <div className="inline-grid grid-rows-7 grid-flow-col auto-cols-max gap-1">
             {days.map(day => {
                 const dateString = format(day, 'yyyy-MM-dd');
                 const count = dataMap.get(dateString) || 0;
@@ -44,7 +39,7 @@ const ActivityHeatmap = ({ data }: { data: { date: string; dsaProblems: number }
                     <TooltipProvider key={dateString}>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <div className={`aspect-square rounded-sm ${getColor(count)}`} />
+                                <div className={`w-4 h-4 rounded-sm ${getColor(count)}`} />
                             </TooltipTrigger>
                             <TooltipContent>
                                 <p>{count} problems on {format(day, 'MMM d')}</p>

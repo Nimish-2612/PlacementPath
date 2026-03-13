@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Home, Milestone, Target, FolderGit2, LayoutGrid, LineChart, MessageSquare, User, Map } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const links = [
+export const mainNavLinks = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
   { href: '/dashboard/preparation-gps', label: 'Preparation GPS', icon: Map },
   { href: '/dashboard/roadmap', label: 'Roadmap', icon: Milestone },
@@ -22,7 +22,7 @@ export function MainNav() {
 
   return (
     <div className="flex w-full flex-col gap-2">
-      {links.map(({ href, label, icon: Icon }) => (
+      {mainNavLinks.map(({ href, label, icon: Icon }) => (
         <Link
           key={label}
           href={href}

@@ -1,10 +1,11 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { Compass } from 'lucide-react';
+import { Compass, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { gsap } from 'gsap';
+import { Sheet, SheetTrigger, SheetContent, SheetClose } from '@/components/ui/sheet';
 
 export const LandingHeader = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -53,9 +54,32 @@ export const LandingHeader = () => {
           </Button>
         </nav>
         <div className='md:hidden'>
-            <Button asChild>
-                <Link href="/login">Get Started</Link>
-            </Button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right">
+              <nav className="grid gap-4 text-center mt-8">
+                <SheetClose asChild>
+                  <Link href="#features" className="text-lg py-2 hover:text-primary">Features</Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link href="#testimonials" className="text-lg py-2 hover:text-primary">Testimonials</Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link href="/login" className="text-lg py-2 hover:text-primary">Log In</Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button asChild className="w-full mt-4">
+                    <Link href="/signup">Get Started Free</Link>
+                  </Button>
+                </SheetClose>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
