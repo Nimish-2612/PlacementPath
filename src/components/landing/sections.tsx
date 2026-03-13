@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { Compass, Users, BrainCircuit, Heart, BarChart, LayoutGrid, FolderGit2, Target, MoveRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,7 +18,7 @@ import {
 import { cn } from '@/lib/utils';
 import PreparationGpsMap from '../gps/preparation-gps-map';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
 const AnimatedSection = ({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -87,12 +88,6 @@ export const HeroSection = () => {
   useEffect(() => {
     const headline = headlineRef.current;
     if (!headline) return;
-    
-    // Split text into words for animation
-    const words = headline.innerText.split(' ');
-    headline.innerHTML = words.map(word => `<span class="inline-block translate-y-full">${word}</span>`).join(' ');
-    
-    const wordSpans = headline.children;
 
     const tl = gsap.timeline({ defaults: { ease: "power3.out" }});
     
@@ -102,21 +97,24 @@ export const HeroSection = () => {
       duration: 0.5,
       delay: 0.2
     })
-    .to(wordSpans, {
-      y: 0,
-      stagger: 0.05,
-      duration: 1,
+    .from(headline, {
+      duration: 2,
+      scrambleText: {
+        chars: "lowerCase",
+        speed: 0.3,
+      },
+      ease: "none",
     }, "-=0.3")
     .to(sublineRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
-    }, "-=0.8")
+    }, "-=1.5")
     .to(buttonsRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.8,
-    }, "-=0.6");
+    }, "-=1.2");
     
   }, []);
 
@@ -126,7 +124,7 @@ export const HeroSection = () => {
       <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#fbe9d7,transparent)] dark:bg-[radial-gradient(circle_500px_at_50%_200px,#332211,transparent)] -z-10"></div>
       <div className="container mx-auto px-4">
         <Badge ref={badgeRef} variant="outline" className="mb-4 text-primary border-primary bg-primary/10 opacity-0 -translate-y-4">Your Personal Guide to Placement Success</Badge>
-        <h1 ref={headlineRef} className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-foreground [&>span]:mr-3 overflow-hidden">
+        <h1 ref={headlineRef} className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-foreground">
           Placement prep shouldn’t be overwhelming.
         </h1>
         <p ref={sublineRef} className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground mb-10 opacity-0 translate-y-4">
