@@ -1,26 +1,35 @@
-import DsaProgress from "@/components/dashboard/dsa-progress";
-import ProjectsSummary from "@/components/dashboard/projects-summary";
-import CsCoverage from "@/components/dashboard/cs-coverage";
-import ReadinessScore from "@/components/dashboard/readiness-score";
-import { QuickLinks } from "@/components/dashboard/quick-links";
+import DsaProgressCard from "@/components/dashboard/dsa-progress";
+import ProjectsSummaryCard from "@/components/dashboard/projects-summary";
+import CoreSubjectsCard from "@/components/dashboard/cs-coverage";
+import ReadinessScoreCard from "@/components/dashboard/readiness-score";
+import { QuickLinksCard } from "@/components/dashboard/quick-links";
 import { WelcomeHeader } from "@/components/dashboard/welcome-header";
+import WeakestAreaCard from "@/components/dashboard/weakest-area";
+import ConsistencyScoreCard from "@/components/dashboard/consistency-score";
+import SuggestionsCard from "@/components/dashboard/suggestions-card";
+import FeedbackSummaryCard from "@/components/dashboard/feedback-summary";
 
 export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <WelcomeHeader />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <DsaProgress />
-        <CsCoverage />
-        <ProjectsSummary />
-        <ReadinessScore />
+        <DsaProgressCard />
+        <CoreSubjectsCard />
+        <ProjectsSummaryCard />
+        <ReadinessScoreCard />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <WeakestAreaCard />
+        <ConsistencyScoreCard />
+        <SuggestionsCard />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-4">
-          <QuickLinks />
+          <QuickLinksCard />
         </div>
         <div className="lg:col-span-3">
-          {/* Another component can go here, maybe recent activity */}
+          <FeedbackSummaryCard />
         </div>
       </div>
     </div>

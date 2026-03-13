@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { usePlacementData } from '@/context/placement-data-context';
 
-export default function DsaProgress() {
-    const { dsaCompletion } = usePlacementData();
+export default function DsaProgressCard() {
+    const { dsaCompletion, state } = usePlacementData();
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -17,7 +17,7 @@ export default function DsaProgress() {
         <Progress value={dsaCompletion} className="mt-2" />
         <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
             <Target className="h-4 w-4"/>
-            <span>{Math.round(dsaCompletion/100 * 16)} of 16 topics mastered</span>
+            <span>{Math.round(dsaCompletion/100 * state.dsaTopics.length)} of {state.dsaTopics.length} topics mastered</span>
         </div>
       </CardContent>
     </Card>

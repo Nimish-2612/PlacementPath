@@ -10,15 +10,6 @@ import { Badge } from '@/components/ui/badge';
 export default function ProjectsPage() {
   const { state } = usePlacementData();
 
-  const getConfidenceColor = (confidence: string) => {
-    switch (confidence) {
-        case 'High': return 'bg-green-500';
-        case 'Medium': return 'bg-yellow-500';
-        case 'Low': return 'bg-red-500';
-        default: return 'bg-gray-500';
-    }
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -56,7 +47,7 @@ export default function ProjectsPage() {
               <CardHeader>
                 <CardTitle className='flex justify-between items-start'>
                     {project.name}
-                    <Badge variant={project.confidence === 'High' ? 'default' : project.confidence === 'Medium' ? 'secondary' : 'destructive'} className={getConfidenceColor(project.confidence)}>
+                    <Badge variant={project.confidence === 'High' ? 'default' : project.confidence === 'Medium' ? 'secondary' : 'destructive'}>
                         {project.confidence}
                     </Badge>
                 </CardTitle>

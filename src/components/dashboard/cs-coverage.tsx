@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { usePlacementData } from '@/context/placement-data-context';
 
-export default function CsCoverage() {
-    const { coreCsCompletion } = usePlacementData();
+export default function CoreSubjectsCard() {
+    const { coreCsCompletion, state } = usePlacementData();
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -18,7 +18,7 @@ export default function CsCoverage() {
         <Progress value={coreCsCompletion} className="mt-2" />
         <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
             <BookOpen className="h-4 w-4"/>
-            <span>{Math.round(coreCsCompletion/100 * 4)} of 4 subjects covered</span>
+            <span>{Math.round(coreCsCompletion/100 * state.coreCsTopics.length)} of {state.coreCsTopics.length} subjects covered</span>
         </div>
       </CardContent>
     </Card>

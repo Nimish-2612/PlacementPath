@@ -1,4 +1,5 @@
-import type { DsaTopic, CoreCsTopic } from './types';
+import type { DsaTopic, CoreCsTopic, Role } from './types';
+import rolesData from './roles.json';
 
 export const INITIAL_DSA_TOPICS: DsaTopic[] = [
   // Arrays
@@ -31,3 +32,5 @@ export const INITIAL_CORE_CS_TOPICS: CoreCsTopic[] = [
   { id: 'cs-3', name: 'OS', completed: false },
   { id: 'cs-4', name: 'CN', completed: false },
 ];
+
+export const ROLES: Role[] = rolesData.roles;

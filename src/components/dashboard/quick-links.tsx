@@ -1,20 +1,19 @@
 import Link from "next/link";
-import { Milestone, Target, FolderGit2, ArrowRight } from "lucide-react";
+import { Milestone, Target, FolderGit2, ArrowRight, LayoutGrid, LineChart, MessageSquare, User } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "../ui/button";
 
 const links = [
-    {
-      title: "View Full Roadmap",
-      description: "See the complete path from start to finish.",
-      icon: Milestone,
-      href: "/dashboard/roadmap",
-    },
     {
       title: "Update DSA Progress",
       description: "Mark topics as you master them.",
       icon: Target,
       href: "/dashboard/dsa",
+    },
+    {
+      title: "Analyze Skill Gaps",
+      description: "Identify missing skills for your target role.",
+      icon: LayoutGrid,
+      href: "/dashboard/skill-gap",
     },
     {
       title: "Manage Projects",
@@ -24,7 +23,7 @@ const links = [
     },
   ];
 
-export function QuickLinks() {
+export function QuickLinksCard() {
   return (
     <Card>
       <CardHeader>

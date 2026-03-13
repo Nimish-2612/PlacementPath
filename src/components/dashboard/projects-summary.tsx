@@ -1,10 +1,10 @@
 'use client';
-import { FolderGit2, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { usePlacementData } from '@/context/placement-data-context';
 import { Badge } from '../ui/badge';
 
-export default function ProjectsSummary() {
+export default function ProjectsSummaryCard() {
     const { projectsCompleted, projectConfidence } = usePlacementData();
   return (
     <Card>
@@ -17,7 +17,7 @@ export default function ProjectsSummary() {
         <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
             <Star className="h-4 w-4" />
             <span>Avg. Confidence: </span>
-            <Badge variant={projectConfidence === 'High' ? 'default' : projectConfidence === 'Medium' ? 'secondary' : 'destructive'} className={projectConfidence === 'High' ? 'bg-green-600' : ''}>
+            <Badge variant={projectConfidence === 'High' ? 'default' : projectConfidence === 'Medium' ? 'secondary' : 'destructive'}>
                 {projectConfidence}
             </Badge>
         </div>

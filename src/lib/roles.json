@@ -1,0 +1,35 @@
+{
+  "roles": [
+    {
+      "name": "Software Engineer",
+      "requiredDsa": [
+        "Introduction to Arrays", "Two Pointers", "Sliding Window", 
+        "Basic String Manipulation", "String Matching (KMP)", 
+        "Introduction to Recursion", "Backtracking", 
+        "Binary Trees & Traversals", "Binary Search Trees", "Heaps & Priority Queues", 
+        "Graph Traversals (BFS, DFS)", "Shortest Path Algorithms", "Topological Sort", 
+        "Introduction to DP", "Knapsack Problem", "Longest Common Subsequence"
+      ],
+      "requiredCs": ["OOPS", "DBMS", "OS", "CN"]
+    },
+    {
+      "name": "Backend Developer",
+      "requiredDsa": [
+        "Introduction to Arrays", "Two Pointers", 
+        "Basic String Manipulation", "Binary Search Trees", 
+        "Graph Traversals (BFS, DFS)", "Shortest Path Algorithms", "Introduction to DP"
+      ],
+      "requiredCs": ["OOPS", "DBMS", "OS", "CN"]
+    },
+    {
+      "name": "Data Scientist",
+      "requiredDsa": ["Introduction to Arrays", "Sliding Window", "Binary Trees & Traversals"],
+      "requiredCs": ["DBMS"]
+    },
+    {
+      "name": "ML Engineer",
+      "requiredDsa": ["Introduction to Arrays", "Two Pointers", "Graph Traversals (BFS, DFS)"],
+      "requiredCs": ["OOPS", "OS"]
+    }
+  ]
+}

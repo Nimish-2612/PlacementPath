@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Milestone, Target, FolderGit2 } from 'lucide-react';
+import { Home, Milestone, Target, FolderGit2, LayoutGrid, LineChart, MessageSquare, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const links = [
@@ -10,6 +10,10 @@ const links = [
   { href: '/dashboard/roadmap', label: 'Roadmap', icon: Milestone },
   { href: '/dashboard/dsa', label: 'DSA Tracker', icon: Target },
   { href: '/dashboard/projects', label: 'Projects', icon: FolderGit2 },
+  { href: '/dashboard/skill-gap', label: 'Skill Gap', icon: LayoutGrid },
+  { href: '/dashboard/progress', label: 'Progress', icon: LineChart },
+  { href: '/dashboard/feedback', label: 'Feedback', icon: MessageSquare },
+  { href: '/dashboard/profile', label: 'Profile', icon: User },
 ];
 
 export function MainNav() {
