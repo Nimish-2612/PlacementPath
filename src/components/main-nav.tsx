@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Milestone, Target, FolderGit2, LayoutGrid, LineChart, MessageSquare, User } from 'lucide-react';
+import { Home, Milestone, Target, FolderGit2, LayoutGrid, LineChart, MessageSquare, User, Map } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const links = [
   { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/dashboard/preparation-gps', label: 'Preparation GPS', icon: Map },
   { href: '/dashboard/roadmap', label: 'Roadmap', icon: Milestone },
   { href: '/dashboard/dsa', label: 'DSA Tracker', icon: Target },
   { href: '/dashboard/projects', label: 'Projects', icon: FolderGit2 },

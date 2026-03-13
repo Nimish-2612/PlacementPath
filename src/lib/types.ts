@@ -57,6 +57,13 @@ export type Feedback = {
   timestamp: number;
 }
 
+export type Milestone = {
+    name: string;
+    readinessThreshold: number; // Score required to reach this milestone
+    topics: string[]; // DSA topics related to this milestone
+    estimatedTime: string;
+};
+
 export type PlacementDataState = {
   dsaTopics: DsaTopic[];
   coreCsTopics: CoreCsTopic[];

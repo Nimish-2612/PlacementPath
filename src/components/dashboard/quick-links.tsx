@@ -1,8 +1,14 @@
 import Link from "next/link";
-import { Milestone, Target, FolderGit2, ArrowRight, LayoutGrid, LineChart, MessageSquare, User } from "lucide-react";
+import { Milestone, Target, FolderGit2, ArrowRight, LayoutGrid, LineChart, MessageSquare, User, Map } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 const links = [
+    {
+      title: "View Preparation GPS",
+      description: "Visualize your journey to readiness.",
+      icon: Map,
+      href: "/dashboard/preparation-gps",
+    },
     {
       title: "Update DSA Progress",
       description: "Mark topics as you master them.",
